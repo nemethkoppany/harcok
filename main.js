@@ -119,12 +119,46 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
     const forces2 = document.getElementById("harcolo2");//Id alapján bekérjük az elemet
     const military2 = document.getElementById("hadero2");//Id alapján bekérjük az elemet
 
+    const Form = e.currentTarget;//A Form változóban tároljuk el a futáshoz szükséges form-ot
+    const errorElement = Form.querySelectorAll('.error')//Egy változóban eltároljuk azokat a Form változóban eltárolt elemeket amelynek van error class-uk
+    for(const error of errorElement){//Végigmegyünk ezeken az elemeken
+        error.innerHTML = "";//Ezeknek a celláknak a tartalmát kitöröljük
+    }
+    let valid = true;//A valid alapértelmezett értéke true
+
     const war_name_value = war_name.value;//Ennek az elemnek megnézzük az értékét
     const forces1_value = forces1.value;//Ennek az elemnek megnézzük az értékét
     const military1_value = military1.value;//Ennek az elemnek megnézzük az értékét
     const forces2_value = forces2.value;//Ennek az elemnek megnézzük az értékét
     const military2_value = military2.value;//Ennek az elemnek megnézzük az értékét
 
+    
+    if(war_name_value === ""){//Ha nincs semmi beírva az adott mezőbe
+        const parentElement = war_name.parentElement;//Megkeressük az elem parentjét, ami itt a field
+        const error = parentElement.querySelector(".error")//Megnézzük, hogy a fielden belül hol van az error class-al ellátott elem
+        if(error != undefined){//És ha oda nincs semmi írva
+            error.innerHTML = "A harc neve nem lehet üres!"//Adja meg a hibaüzenetet
+        }
+        valid = false;//És legyen a valid értéke false
+    }
+    if(forces1_value === ""){//Ha nincs semmi beírva az adott mezőbe
+        const parentElement = forces1.parentElement;//Megkeressük az elem parentjét, ami itt a field
+        const error = parentElement.querySelector(".error")//Megnézzük, hogy a fielden belül hol van az error class-al ellátott elem
+        if(error != undefined){//És ha oda nincs semmi írva
+            error.innerHTML = "A harcoló fél nem lehet üres!"//Adja meg a hibaüzenetet
+        }
+        valid = false;//És legyen a valid értéke false
+    }
+    if(military1_value === ""){//Ha nincs semmi beírva az adott mezőbe
+        const parentElement = military1.parentElement;//Megkeressük az elem parentjét, ami itt a field
+        const error = parentElement.querySelector(".error")//Megnézzük, hogy a fielden belül hol van az error class-al ellátott elem
+        if(error != undefined){//És ha oda nincs semmi írva
+            error.innerHTML = "A haderő nem lehet üres!"//Adja meg a hibaüzenetet
+        }
+        valid = false;//És legyen a valid értéke false
+    }
+
+    if(valid = true){//Ha a valid értéke true maradt
     const Element = {//Készítünk egy új objektumot
         war: war_name_value,//A war tulajdonság értéke a megadott elem értéke
         forces1: forces1_value,//A forces1 tulajdonság értéke a megadott elem értéke
@@ -134,5 +168,7 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
     }
     harcArray.push(Element);//Hozzáadjuk a tömbhöz
     tbody.innerHTML ="";//Lenullázzuk a tábla elemeit
+    Form.reset();//Amikor rányomtunk a Hozzáadás gombra és minden adat helyes és ki van töltve ez lenullázza az űrlapot
     tableGenerate();//Meghívjuk a függvényt
+    }
 })
