@@ -109,3 +109,30 @@ function tableGenerate(){//Új funkció ami táblázatot generál
 }
 tableGenerate();//A függvény meghívása
 
+const form = document.getElementById("form");//Bekérjük a form elemet az id-je alapján
+form.addEventListener("submit",function(e){//Létrehozunk a formnak egy eseménykezelőt
+    e.preventDefault();//Ez megakadályozza az űrlap alapértelmezett lefutását
+
+    const war_name = document.getElementById("harc_nev");//Id alapján bekérjük az elemet
+    const forces1 = document.getElementById("harcolo1");//Id alapján bekérjük az elemet
+    const military1 = document.getElementById("hadero1");//Id alapján bekérjük az elemet
+    const forces2 = document.getElementById("harcolo2");//Id alapján bekérjük az elemet
+    const military2 = document.getElementById("hadero2");//Id alapján bekérjük az elemet
+
+    const war_name_value = war_name.value;//Ennek az elemnek megnézzük az értékét
+    const forces1_value = forces1.value;//Ennek az elemnek megnézzük az értékét
+    const military1_value = military1.value;//Ennek az elemnek megnézzük az értékét
+    const forces2_value = forces2.value;//Ennek az elemnek megnézzük az értékét
+    const military2_value = military2.value;//Ennek az elemnek megnézzük az értékét
+
+    const Element = {//Készítünk egy új objektumot
+        war: war_name_value,//A war tulajdonság értéke a megadott elem értéke
+        forces1: forces1_value,//A forces1 tulajdonság értéke a megadott elem értéke
+        military1: military1_value,//A military1 tulajdonság értéke a megadott elem értéke
+        forces2: forces2_value,//A forces2 tulajdonság értéke a megadott elem értéke
+        military2: military2_value//A military2 tulajdonság értéke a megadott elem értéke
+    }
+    harcArray.push(Element);//Hozzáadjuk a tömbhöz
+    tbody.innerHTML ="";//Lenullázzuk a tábla elemeit
+    tableGenerate();//Meghívjuk a függvényt
+})
