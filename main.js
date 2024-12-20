@@ -119,7 +119,7 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
     const forces2 = document.getElementById("harcolo2");//Id alapján bekérjük az elemet
     const military2 = document.getElementById("hadero2");//Id alapján bekérjük az elemet
 
-    const Form = e.currentTarget;//A Form változóban tároljuk el a futáshoz szükséges form-ot
+    const Form = e.currentTarget;//A Form változóban tároljuk el a futáshoz szükséges form-ot amiben vannak a fenti elemek(war_name, forces1, stb.)
     const errorElement = Form.querySelectorAll('.error')//Egy változóban eltároljuk azokat a Form változóban eltárolt elemeket amelynek van error class-uk
     for(const error of errorElement){//Végigmegyünk ezeken az elemeken
         error.innerHTML = "";//Ezeknek a celláknak a tartalmát kitöröljük
