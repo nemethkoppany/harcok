@@ -55,7 +55,13 @@ colgroup.appendChild(col3);//Hozzárakjuk colgrouphoz
 
 const thead = document.createElement("thead");//Csinálunk egy thead elemet
 table.appendChild(thead);//Hozzárakjuk a table-höz
-
+/**
+ * A fejléc generálása
+ * Készítünk egy tömböt amiben a fejléc celláinak tartalma szerepel
+ * lértehozunk egy tr nevű sort amit hozzárendelünk a thead-hez
+ * Végigmegyünk a tömbbön és megadjuk a celláknak amiket generáltunk, hogy melyik tömbből szedett elem lesz beléjük írva
+ * Hozzárakjuk a th-t a tr-hez
+ */
 function makeHeader(){//Header készítős függvény
     fejlec = ["Harc megnevezése","Szembenálló felek","Haderő"]//Egy fejlec dömb melyben benne vannak a szövegek amik kellenek
     const tr = document.createElement("tr");//Sor készítése
@@ -70,6 +76,13 @@ function makeHeader(){//Header készítős függvény
 makeHeader();
 const tbody = document.createElement("tbody");//Készítünk egy tábla törzset
 table.appendChild(tbody);//Ezt hozzáadjuk a table-höz
+/**
+ * 
+ * @param {array} array
+ * Végigmegyünk az arrayen
+ * Elészítjük a sorokat és cellákat 
+ * Csak akkor van még egy sor ha van második harcoló fél és haderő 
+ */
 function tableGenerate(array){//Új funkció ami táblázatot generál
     for(const currentElement of array ){//Végigmegyünk a harcArray tömbön
         const tbody_tr = document.createElement("tr");//Készítünk a törzsnek is egy sort
@@ -122,7 +135,15 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
     for(const error of errorElement){//Végigmegyünk ezeken az elemeken
         error.innerHTML = "";//Ezeknek a celláknak a tartalmát kitöröljük
     }
-
+/**
+ * 
+ * @param {HTMLElement} input 
+ * @param {String} errorMessage 
+ * @returns 
+ * Egyszerű validáció
+ * Csak azt nézi meg, hogy az adott helyre van e valami írva
+ * Ha nincs ad egy hibaüzenetet
+ */
     function simpleValidation(input, errorMessage){//Egyszerű validációs függvény, paraméterekkel
         let valid = true;//Alapértelmezett értéke true, azért adjuk meg itt is, hogy ne legyen befojásolva a függvény kimenete egy másik függvény által ami esetleg megváltoztatja a valid értékét
         if(input.value === ""){//Hogyha az bemeneti mezőben nincs semmi
@@ -135,6 +156,16 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
         }
         return valid;//Térjen vissza a valid-dal
     }
+    /**
+     * 
+     * @param {HTMLElement} war_name 
+     * @param {HTMLElement} forces1 
+     * @param {HTMLElement} military1 
+     * @returns 
+     * Egyszerű validáció
+     * Ha a függvénymeghívás nem true akkor adjon hibaüzenetet és legyen a valid értéke hamis
+     * Térjen vissza a validdal
+     */
 function simpleValidationWithData(war_name,forces1,military1){//Függvénybe rendezés és paramétermegadás
     let valid = true;//Alapértelmezett érték true;
      if(!simpleValidation(war_name, "A csata megadása kötelező!")){//ha a simpleValidation nem igaz, tehát ha a bemeneti mező üres(Amit abból állapítunk meg, hogy a simpleValidation függvény visszatérési értéke true vagy false)
@@ -149,6 +180,14 @@ function simpleValidationWithData(war_name,forces1,military1){//Függvénybe ren
     return valid;//Térjen vissza a valid
 }
 
+/**
+ * 
+ * @param {HTMLElement} forces2 
+ * @param {HTMLElement} military2 
+ * @returns 
+ * Ha az egyik mező nincs kitöltve de a másik igen vagy fordytva akkor ad egy hibaüzenetet
+ * Több if van használva mint amennyi kell a könnyebb érthetőség érdekében(nekem így könnyebben érthető)
+ */
 function complexValidation(forces2,military2){//Függvénybe rendezés és paramétermegadás
     let valid = true;//Alapértelmezett érték true;
     if((!military2.value&&forces2.value ) || (military2.value  && !forces2.value )){//Megnézi, hogy ha a military2-ben nincs semmi, de a forces2-ben van valami és fordítva(Ez azért kell mert ezeknél csak akkor kell hibát dobni ha az egyik nincs megadva a másik viszont igen, egyébként ezen adatok nélkül is működhet a táblakitöltés)
