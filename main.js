@@ -90,7 +90,7 @@ function tableGenerate(){//Új funkció ami táblázatot generál
         military_power1.innerHTML = currentElement.military1;//Ez lesz a cellába írva
         tbody_tr.appendChild(military_power1);//Hozzáadjuk a sorhoz
 
-        if(currentElement.forces2 !== ""  && currentElement.military2 !== ""){//Hogyha a második félhez és azok haderejéhez is van valami írva
+        if(currentElement.forces2  && currentElement.military2 ){//Hogyha a második félhez és azok haderejéhez is van valami írva
 
             const second_row_tr = document.createElement("tr");//Akkor készítsen egy új sort
             tbody.appendChild(second_row_tr);//Amit rakjon bele a tbody-ba
@@ -125,7 +125,6 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
     for(const error of errorElement){//Végigmegyünk ezeken az elemeken
         error.innerHTML = "";//Ezeknek a celláknak a tartalmát kitöröljük
     }
-    let valid = true;//Alapértelmezett értéke true
 
     function simpleValidation(input, errorMessage){//Egyszerű validációs függvény, paraméterekkel
         let valid = true;//Alapértelmezett értéke true, azért adjuk meg itt is, hogy ne legyen befojásolva a függvény kimenete egy másik függvény által ami esetleg megváltoztatja a valid értékét
@@ -139,7 +138,8 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
         }
         return valid;//Térjen vissza a valid-dal
     }
-   
+function simpleValidationWithData(war_name,forces1,military1){//Függvénybe rendezés és paramétermegadás
+    let valid = true;//Alapértelmezett érték true;
      if(!simpleValidation(war_name, "A csata megadása kötelező!")){//ha a simpleValidation nem igaz, tehát ha a bemeneti mező üres(Amit abból állapítunk meg, hogy a simpleValidation függvény visszatérési értéke true vagy false)
          valid = false;//Legyen a valid értéke false
      }
@@ -149,19 +149,26 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
     if(!simpleValidation(military1, "A haderő megadása kötelező!")){//ha a simpleValidation nem igaz, tehát ha a bemeneti mező üres
         valid = false;//Legyen a valid értéke false
     }
+    return valid;//Térjen vissza a valid
+}
 
-    if((military2.value === ""&&forces2.value !== "") || (military2.value !== "" && forces2.value === "")){//Megnézi, hogy ha a military2-ben nincs semmi, de a forces2-ben van valami és fordítva(Ez azért kell mert ezeknél csak akkor kell hibát dobni ha az egyik nincs megadva a másik viszont igen, egyébként ezen adatok nélkül is működhet a táblakitöltés)
-        if(forces2.value === ""){//Ha a forces2 nincs kitöltve
+function complexValidation(forces2,military2){//Függvénybe rendezés és paramétermegadás
+    let valid = true;//Alapértelmezett érték true;
+    if((!military2.value&&forces2.value ) || (military2.value  && !forces2.value )){//Megnézi, hogy ha a military2-ben nincs semmi, de a forces2-ben van valami és fordítva(Ez azért kell mert ezeknél csak akkor kell hibát dobni ha az egyik nincs megadva a másik viszont igen, egyébként ezen adatok nélkül is működhet a táblakitöltés)
+        if(!forces2.value ){//Ha a forces2 nincs kitöltve
             simpleValidation(forces2, "Minden haderőhöz tartozik egy harcoló fél");//Írjon ki hibaüzenetet
-           
+           valid = false;//Legyen a valid hamis
         }
-        if(military2.value === ""){//Ha a military2 nincs kitöltve
+        if(!military2.value ){//Ha a military2 nincs kitöltve
             simpleValidation(military2, "Minden harcoló félhez tarozik egy haderő");//Írjon ki hibaüzenetet
-           
+           valid = false;//Legyen a valid hamis
         }
-        valid = false;//A valid értéke legyen false
-    } 
-    if(valid){//Ha a valid értéke true maradt(Amit abból állítunk meg, hogy a függvényhívások falseá véltoztatták e a valid értékét vagy sem)
+       
+    }
+    return valid;//Térjen vissza a valid
+}
+
+    if(simpleValidationWithData(war_name,forces1,military1)&&complexValidation(forces2,military2)){//Ha minden feltételnek megfelelt az űrlapkitöltés(A feltételek a függvényekben vannak)
     const war_name_value = war_name.value;//Ennek az elemnek megnézzük az értékét
     const forces1_value = forces1.value;//Ennek az elemnek megnézzük az értékét
     const military1_value = military1.value;//Ennek az elemnek megnézzük az értékét
