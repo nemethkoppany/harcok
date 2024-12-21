@@ -56,21 +56,18 @@ colgroup.appendChild(col3);//Hozzárakjuk colgrouphoz
 const thead = document.createElement("thead");//Csinálunk egy thead elemet
 table.appendChild(thead);//Hozzárakjuk a table-höz
 
-const thead_tr = document.createElement("tr");//Készytünk egy sort a fejléchez
-thead.appendChild(thead_tr);//Hozzárakjuk a thead-hez
+function makeHeader(){//Header készítős függvény
+    fejlec = ["Harc megnevezése","Szembenálló felek","Haderő"]//Egy fejlec dömb melyben benne vannak a szövegek amik kellenek
+    const tr = document.createElement("tr");//Sor készítése
+    thead.appendChild(tr);//Hozzárakom a thead-hez
 
-const th_war = document.createElement("th");//Egy cella létrehozása
-th_war.innerHTML = header.war;//Ebbe a cellába ez lesz írva
-thead_tr.appendChild(th_war);//És ezt hozzáadjuk a sorhoz
-
-const th_forces = document.createElement("th");//Egy cella létrehozása
-th_forces.innerHTML= header.forces;//Ebbe a cellába ez lesz írva
-thead_tr.appendChild(th_forces);//És ezt hozzáadjuk a sorhoz
-
-const th_military = document.createElement("th");//Egy cella létrehozása
-th_military.innerHTML = header.military;//Ebbe a cellába ez lesz írva
-thead_tr.appendChild(th_military);//És ezt hozzáadjuk a sorhoz
-
+    for(let i = 0; i < fejlec.length; i++){//for ciklussal végigmegyek a tömbön
+        const th = document.createElement("th");//Készítek egy univerzális cellát
+        th.innerHTML = fejlec[i];//A cellába kerül a tömb i-edik eleme (Harc megnevezése stb.)
+        tr.appendChild(th_war);//Hozzáadjuk a sorhoz
+    }
+}
+makeHeader();
 const tbody = document.createElement("tbody");//Készítünk egy tábla törzset
 table.appendChild(tbody);//Ezt hozzáadjuk a table-höz
 function tableGenerate(){//Új funkció ami táblázatot generál
