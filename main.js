@@ -90,7 +90,7 @@ function tableGenerate(){//Új funkció ami táblázatot generál
         military_power1.innerHTML = currentElement.military1;//Ez lesz a cellába írva
         tbody_tr.appendChild(military_power1);//Hozzáadjuk a sorhoz
 
-        if(currentElement.forces2 && currentElement.military2 !== undefined){//Hogyha a második félhez és azok haderejéhez is van valami írva
+        if(currentElement.forces2 !== undefined  && currentElement.military2 !== undefined){//Hogyha a második félhez és azok haderejéhez is van valami írva
 
             const second_row_tr = document.createElement("tr");//Akkor készítsen egy új sort
             tbody.appendChild(second_row_tr);//Amit rakjon bele a tbody-ba
@@ -112,6 +112,7 @@ tableGenerate();//A függvény meghívása
 const form = document.getElementById("form");//Bekérjük a form elemet az id-je alapján
 form.addEventListener("submit",function(e){//Létrehozunk a formnak egy eseménykezelőt
     e.preventDefault();//Ez megakadályozza az űrlap alapértelmezett lefutását
+   
 
     const war_name = document.getElementById("harc_nev");//Id alapján bekérjük az elemet
     const forces1 = document.getElementById("harcolo1");//Id alapján bekérjük az elemet
@@ -124,41 +125,38 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
     for(const error of errorElement){//Végigmegyünk ezeken az elemeken
         error.innerHTML = "";//Ezeknek a celláknak a tartalmát kitöröljük
     }
-    let valid = true;//A valid alapértelmezett értéke true
+    let valid = true;//Alapértelmezett értéke true
 
+    function simpleValidation(input, errorMessage){//Egyszerű validációs függvény, paraméterekkel
+        let valid = true;//Alapértelmezett értéke true, azért adjuk meg itt is, hogy ne legyen befojásolva a függvény kimenete egy másik függvény által ami esetleg megváltoztatja a valid értékét
+        if(input.value.trim() === ""){//Hogyha az bemeneti mezőben (Aminek az üres mezőit levágtuk az oldaláról) nincs semmi
+            const parentElement = input.parentElement;//Bekérjük a parentelementet(Ami ebben az esetben a field)
+            const error = parentElement.querySelector(".error");//Megkeresi, hogy ebben a parentben van-e error class-al ellátott elem
+            if(error != undefined){//Ha az az elem üres(Az lesz mert föntebb lenulláztuk)
+                error.innerHTML = errorMessage;//Adjon neki error message-et
+            }
+            valid = false;//és legyen a valid értéje false
+        }
+        return valid;//Térjen vissza a valid-dal
+    }
+    
+     if(!simpleValidation(war_name, "A csata megadása kötelező!")){//ha a simpleValidation nem igaz, tehát ha a bemeneti mező üres(Amit abból állapítunk meg, hogy a simpleValidation függvény visszatérési értéke true vagy false)
+         valid = false;//Legyen a valid értéke false
+     }
+    if(!simpleValidation(forces1, "A  csatázó fél megadása kötelező!")){//ha a simpleValidation nem igaz, tehát ha a bemeneti mező üres
+        valid = false;//Legyen a valid értéke false
+    }
+    if(!simpleValidation(military1, "A haderő megadása kötelező!")){//ha a simpleValidation nem igaz, tehát ha a bemeneti mező üres
+        valid = false;//Legyen a valid értéke false
+    }
+
+    if(valid){//Ha a valid értéke true maradt(Amit abból állítunk meg, hogy a függvényhívások falseá véltoztatták e a valid értékét vagy sem)
     const war_name_value = war_name.value;//Ennek az elemnek megnézzük az értékét
     const forces1_value = forces1.value;//Ennek az elemnek megnézzük az értékét
     const military1_value = military1.value;//Ennek az elemnek megnézzük az értékét
     const forces2_value = forces2.value;//Ennek az elemnek megnézzük az értékét
     const military2_value = military2.value;//Ennek az elemnek megnézzük az értékét
 
-    
-    if(war_name_value === ""){//Ha nincs semmi beírva az adott mezőbe
-        const parentElement = war_name.parentElement;//Megkeressük az elem parentjét, ami itt a field
-        const error = parentElement.querySelector(".error")//Megnézzük, hogy a fielden belül hol van az error class-al ellátott elem
-        if(error != undefined){//És ha oda nincs semmi írva
-            error.innerHTML = "A harc neve nem lehet üres!"//Adja meg a hibaüzenetet
-        }
-        valid = false;//És legyen a valid értéke false
-    }
-    if(forces1_value === ""){//Ha nincs semmi beírva az adott mezőbe
-        const parentElement = forces1.parentElement;//Megkeressük az elem parentjét, ami itt a field
-        const error = parentElement.querySelector(".error")//Megnézzük, hogy a fielden belül hol van az error class-al ellátott elem
-        if(error != undefined){//És ha oda nincs semmi írva
-            error.innerHTML = "A harcoló fél nem lehet üres!"//Adja meg a hibaüzenetet
-        }
-        valid = false;//És legyen a valid értéke false
-    }
-    if(military1_value === ""){//Ha nincs semmi beírva az adott mezőbe
-        const parentElement = military1.parentElement;//Megkeressük az elem parentjét, ami itt a field
-        const error = parentElement.querySelector(".error")//Megnézzük, hogy a fielden belül hol van az error class-al ellátott elem
-        if(error != undefined){//És ha oda nincs semmi írva
-            error.innerHTML = "A haderő nem lehet üres!"//Adja meg a hibaüzenetet
-        }
-        valid = false;//És legyen a valid értéke false
-    }
-
-    if(valid = true){//Ha a valid értéke true maradt
     const Element = {//Készítünk egy új objektumot
         war: war_name_value,//A war tulajdonság értéke a megadott elem értéke
         forces1: forces1_value,//A forces1 tulajdonság értéke a megadott elem értéke
