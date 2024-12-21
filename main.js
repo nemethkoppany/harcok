@@ -182,6 +182,6 @@ function complexValidation(forces2,military2){//Függvénybe rendezés és param
     harcArray.push(Element);//Hozzáadjuk a tömbhöz
     tbody.innerHTML ="";//Lenullázzuk a tábla elemeit
     Form.reset();//Amikor rányomtunk a Hozzáadás gombra és minden adat helyes és ki van töltve ez lenullázza az űrlapot
-    tableGenerate(harcArray);//Meghívjuk a függvényt
+    tableGenerate(harcArray);//Meghívjuk a függvényt 
     }
 })
