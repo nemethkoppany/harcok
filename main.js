@@ -64,14 +64,14 @@ function makeHeader(){//Header készítős függvény
     for(let i = 0; i < fejlec.length; i++){//for ciklussal végigmegyek a tömbön
         const th = document.createElement("th");//Készítek egy univerzális cellát
         th.innerHTML = fejlec[i];//A cellába kerül a tömb i-edik eleme (Harc megnevezése stb.)
-        tr.appendChild(th_war);//Hozzáadjuk a sorhoz
+        tr.appendChild(th);//Hozzáadjuk a sorhoz
     }
 }
 makeHeader();
 const tbody = document.createElement("tbody");//Készítünk egy tábla törzset
 table.appendChild(tbody);//Ezt hozzáadjuk a table-höz
-function tableGenerate(){//Új funkció ami táblázatot generál
-    for(const currentElement of harcArray ){//Végigmegyünk a harcArray tömbön
+function tableGenerate(array){//Új funkció ami táblázatot generál
+    for(const currentElement of array ){//Végigmegyünk a harcArray tömbön
         const tbody_tr = document.createElement("tr");//Készítünk a törzsnek is egy sort
         tbody.appendChild(tbody_tr);//Ezt hozzáadjuk a tbody-hoz
 
@@ -104,7 +104,7 @@ function tableGenerate(){//Új funkció ami táblázatot generál
         }
     }
 }
-tableGenerate();//A függvény meghívása
+tableGenerate(harcArray);//A függvény meghívása
 
 const form = document.getElementById("form");//Bekérjük a form elemet az id-je alapján
 form.addEventListener("submit",function(e){//Létrehozunk a formnak egy eseménykezelőt
@@ -182,6 +182,6 @@ function complexValidation(forces2,military2){//Függvénybe rendezés és param
     harcArray.push(Element);//Hozzáadjuk a tömbhöz
     tbody.innerHTML ="";//Lenullázzuk a tábla elemeit
     Form.reset();//Amikor rányomtunk a Hozzáadás gombra és minden adat helyes és ki van töltve ez lenullázza az űrlapot
-    tableGenerate();//Meghívjuk a függvényt
+    tableGenerate(harcArray);//Meghívjuk a függvényt
     }
 })
