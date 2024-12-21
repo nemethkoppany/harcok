@@ -90,7 +90,7 @@ function tableGenerate(){//Új funkció ami táblázatot generál
         military_power1.innerHTML = currentElement.military1;//Ez lesz a cellába írva
         tbody_tr.appendChild(military_power1);//Hozzáadjuk a sorhoz
 
-        if(currentElement.forces2 !== undefined  && currentElement.military2 !== undefined){//Hogyha a második félhez és azok haderejéhez is van valami írva
+        if(currentElement.forces2 !== ""  && currentElement.military2 !== ""){//Hogyha a második félhez és azok haderejéhez is van valami írva
 
             const second_row_tr = document.createElement("tr");//Akkor készítsen egy új sort
             tbody.appendChild(second_row_tr);//Amit rakjon bele a tbody-ba
@@ -129,7 +129,7 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
 
     function simpleValidation(input, errorMessage){//Egyszerű validációs függvény, paraméterekkel
         let valid = true;//Alapértelmezett értéke true, azért adjuk meg itt is, hogy ne legyen befojásolva a függvény kimenete egy másik függvény által ami esetleg megváltoztatja a valid értékét
-        if(input.value.trim() === ""){//Hogyha az bemeneti mezőben (Aminek az üres mezőit levágtuk az oldaláról) nincs semmi
+        if(input.value === ""){//Hogyha az bemeneti mezőben nincs semmi
             const parentElement = input.parentElement;//Bekérjük a parentelementet(Ami ebben az esetben a field)
             const error = parentElement.querySelector(".error");//Megkeresi, hogy ebben a parentben van-e error class-al ellátott elem
             if(error != undefined){//Ha az az elem üres(Az lesz mert föntebb lenulláztuk)
@@ -139,7 +139,7 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
         }
         return valid;//Térjen vissza a valid-dal
     }
-    
+   
      if(!simpleValidation(war_name, "A csata megadása kötelező!")){//ha a simpleValidation nem igaz, tehát ha a bemeneti mező üres(Amit abból állapítunk meg, hogy a simpleValidation függvény visszatérési értéke true vagy false)
          valid = false;//Legyen a valid értéke false
      }
@@ -150,6 +150,17 @@ form.addEventListener("submit",function(e){//Létrehozunk a formnak egy esemény
         valid = false;//Legyen a valid értéke false
     }
 
+    if((military2.value === ""&&forces2.value !== "") || (military2.value !== "" && forces2.value === "")){//Megnézi, hogy ha a military2-ben nincs semmi, de a forces2-ben van valami és fordítva(Ez azért kell mert ezeknél csak akkor kell hibát dobni ha az egyik nincs megadva a másik viszont igen, egyébként ezen adatok nélkül is működhet a táblakitöltés)
+        if(forces2.value === ""){//Ha a forces2 nincs kitöltve
+            simpleValidation(forces2, "Minden haderőhöz tartozik egy harcoló fél");//Írjon ki hibaüzenetet
+           
+        }
+        if(military2.value === ""){//Ha a military2 nincs kitöltve
+            simpleValidation(military2, "Minden harcoló félhez tarozik egy haderő");//Írjon ki hibaüzenetet
+           
+        }
+        valid = false;//A valid értéke legyen false
+    } 
     if(valid){//Ha a valid értéke true maradt(Amit abból állítunk meg, hogy a függvényhívások falseá véltoztatták e a valid értékét vagy sem)
     const war_name_value = war_name.value;//Ennek az elemnek megnézzük az értékét
     const forces1_value = forces1.value;//Ennek az elemnek megnézzük az értékét
